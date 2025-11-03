@@ -1,22 +1,11 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Redirect } from "expo-router";
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Welcome to Shop Flow AI!</Text>
-    </View>
-  );
+export default function Index() {
+  const isAuthenticated = false; // TODO: Check actual auth state
+
+  if (isAuthenticated) {
+    return <Redirect href="/home" />;
+  }
+
+  return <Redirect href="/sign-in" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-});
