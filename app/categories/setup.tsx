@@ -2,7 +2,7 @@ import { use, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 
-import Input from "../../components/Input.tsx";
+import Input from "../../components/Input";
 
 const InitialCategories = ["Frozen", "Produce", "Dairy", "Bakery"];
 
