@@ -1,39 +1,69 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import { useRouter, Link } from "expo-router";
+import { useState, useEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-const Input = () => {
-  return <TextInput style={styles.input} />;
-};
-
-const MyButton = () => {
-  const router = useRouter();
-
-  const handleOnPress = () => {
-    router.push("/sign-in");
-  };
-
-  return (
-    <Pressable style={styles.button} onPress={handleOnPress}>
-      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
-        Create Account
-      </Text>
-    </Pressable>
-  );
-};
+import Input from "../../components/Input";
+import NavButton from "../../components/NavButton";
+import TextLink from "../../components/TextLink";
 
 export default function CreateAccountScreen() {
-  const router = useRouter();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    console.log("First Name changed:", firstName);
+  }, [firstName]);
+
+  useEffect(() => {
+    console.log("Last Name changed:", lastName);
+  }, [lastName]);
+
+  useEffect(() => {
+    console.log("Password changed:", password);
+  }, [password]);
+
+  const setFirstNameText = (text: string) => {
+    setFirstName(text);
+  };
+
+  const setLastNameText = (text: string) => {
+    setLastName(text);
+  };
+
+  const setEmailText = (text: string) => {
+    setEmail(text);
+  };
+
+  const setPasswordText = (text: string) => {
+    setPassword(text);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Create account screen</Text>
 
-      <Input />
-      <Input />
-      <MyButton />
+      <Input
+        value={firstName}
+        onChangeText={setFirstNameText}
+        placeholder="first name"
+      />
+      <Input
+        value={lastName}
+        onChangeText={setLastNameText}
+        placeholder="last name"
+      />
 
-      <Link href="/sign-in" asChild>
-        <Text>Have an account?</Text>
-      </Link>
+      <Input value={email} onChangeText={setEmailText} placeholder="email" />
+      <Input
+        value={password}
+        onChangeText={setPasswordText}
+        placeholder="password"
+      />
+
+      <NavButton href="/sign-in" text="Create" />
+
+      <TextLink text="Have an account?" href="/sign-in" />
     </View>
   );
 }
@@ -48,22 +78,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
-    fontWeight: "bold",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    width: "80%",
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
   },
 });
