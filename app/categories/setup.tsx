@@ -1,54 +1,11 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 
 import Input from "../../components/Input";
+import CategoryCard from "../../components/CategoryCard";
 
 const InitialCategories = ["Frozen", "Produce", "Dairy", "Bakery"];
-
-const CategoryCard = ({
-  title,
-  isSelectable = false,
-  onPress,
-}: {
-  title: string;
-  isSelectable: boolean;
-  onPress?: (arg: string) => void;
-}) => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  useEffect(() => {
-    console.log(`CategoryCard: ${title} isSelected:`, isSelected);
-  }, [isSelected]);
-
-  const onPressCard = () => {
-    console.log("OnPressCard: (isSelectable)", isSelectable);
-
-    if (isSelectable) {
-      setIsSelected((prev) => !prev);
-    }
-
-    onPress && onPress(title);
-  };
-
-  const selectedStyle = {
-    borderColor: "red",
-    borderWidth: 2,
-  };
-
-  return (
-    <Pressable onPress={onPressCard}>
-      <View
-        style={{
-          ...styles.card,
-          ...(isSelected ? selectedStyle : {}),
-        }}
-      >
-        <Text style={styles.cardText}>{title}</Text>
-      </View>
-    </Pressable>
-  );
-};
 
 const CategoryButton = ({
   children,
@@ -148,7 +105,13 @@ export default function CategorySetupScreen() {
       ]}
     >
       <Text style={styles.text}>Category Setup Screen</Text>
-      <Input value={inputValue} onChangeText={setInputValue} />
+
+      <Input
+        value={inputValue}
+        onChangeText={setInputValue}
+        placeholder="New category name"
+      />
+
       <View style={styles.buttonsContainer}>
         <CategoryButton
           isDisabled={inputValue.length === 0}
@@ -202,28 +165,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  card: {
-    backgroundColor: "#f0f0f0",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cardText: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
   buttonsContainer: {
     backgroundColor: "#fff",
     gap: 10,
     flexDirection: "row",
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    width: "80%",
-    paddingHorizontal: 10,
   },
   button: {
     paddingVertical: 10,
