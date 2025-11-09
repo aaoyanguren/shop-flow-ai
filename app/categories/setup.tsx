@@ -3,34 +3,10 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 
 import Input from "../../components/Input";
+import ActionButton from "../../components/ActionButton";
 import CategoryCard from "../../components/CategoryCard";
 
 const InitialCategories = ["Frozen", "Produce", "Dairy", "Bakery"];
-
-const CategoryButton = ({
-  children,
-  isDisabled = false,
-  onPress,
-}: {
-  children: string;
-  isDisabled?: boolean;
-  onPress: () => void;
-}) => {
-  return (
-    <Pressable
-      style={{
-        ...styles.button,
-        backgroundColor: isDisabled ? "#ddd" : "#007AFF",
-      }}
-      onPress={onPress}
-      disabled={isDisabled}
-    >
-      <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
-        {children}
-      </Text>
-    </Pressable>
-  );
-};
 
 export default function CategorySetupScreen() {
   const [categories, setCategories] = useState<string[]>(InitialCategories);
@@ -58,11 +34,14 @@ export default function CategorySetupScreen() {
     console.log("[STATE] inputValue:", inputValue);
     if (!inputValue) return;
 
-    const newCategory = inputValue.toLowerCase();
+    const newCategory = inputValue;
 
-    if (categories.find((cat) => cat.toLowerCase() === newCategory)) return;
+    if (
+      categories.find((cat) => cat.toLowerCase() === newCategory.toLowerCase())
+    )
+      return;
 
-    setCategories((prevCategories) => [...prevCategories, inputValue]);
+    setCategories((prevCategories) => [...prevCategories, newCategory]);
     setInputValue("");
   };
 
@@ -97,6 +76,8 @@ export default function CategorySetupScreen() {
     setSelectedCategories((prevSelected) => [...prevSelected, category]);
   };
 
+  const removeActionButtonStyles = removeEnabled ? "alternative" : "secondary";
+
   return (
     <View
       style={[
@@ -113,13 +94,14 @@ export default function CategorySetupScreen() {
       />
 
       <View style={styles.buttonsContainer}>
-        <CategoryButton
+        <ActionButton
           isDisabled={inputValue.length === 0}
           onPress={handleAddCategory}
         >
           Add Category
-        </CategoryButton>
-        <CategoryButton
+        </ActionButton>
+        <ActionButton
+          variant={removeActionButtonStyles}
           onPress={() => {
             console.log("Remove Category Pressed");
 
@@ -139,7 +121,7 @@ export default function CategorySetupScreen() {
           }}
         >
           Remove Category
-        </CategoryButton>
+        </ActionButton>
       </View>
 
       <View style={styles.categoriesContainer}>
