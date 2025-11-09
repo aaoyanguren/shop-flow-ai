@@ -78,6 +78,18 @@ export default function CategorySetupScreen() {
 
   const removeActionButtonStyles = removeEnabled ? "alternative" : "secondary";
 
+  const getRemoveCategoryText = () => {
+    if (selectedCategories.length > 0 && removeEnabled) {
+      return "Delete Categories";
+    }
+
+    if (removeEnabled) {
+      return "Cancel";
+    }
+
+    return "Remove Category";
+  };
+
   return (
     <View
       style={[
@@ -120,7 +132,7 @@ export default function CategorySetupScreen() {
             }
           }}
         >
-          Remove Category
+          {getRemoveCategoryText()}
         </ActionButton>
       </View>
 

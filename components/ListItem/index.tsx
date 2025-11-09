@@ -17,7 +17,9 @@ export default function ListItem({
           { backgroundColor: isChecked ? "green" : "none" },
         ]}
       />
-      <Text style={styles.listItemText}>{text}</Text>
+      <Text style={[styles.listItemText, isChecked && styles.checked]}>
+        {text}
+      </Text>
     </Pressable>
   );
 }
@@ -44,5 +46,9 @@ const styles = StyleSheet.create({
   },
   listItemText: {
     fontSize: 16,
+  },
+  checked: {
+    textDecorationLine: "line-through",
+    color: "grey",
   },
 });

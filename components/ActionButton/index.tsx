@@ -51,6 +51,10 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 5,
+
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     fontSize: 16,
