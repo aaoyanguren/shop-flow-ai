@@ -2,19 +2,43 @@ import { StyleSheet, Pressable, Text, View } from "react-native";
 
 export default function ListItem({
   isChecked = false,
+  isSelected = false,
   text,
   onPressItem,
 }: {
   isChecked: boolean;
+  isSelected: boolean;
   text: string;
   onPressItem: () => void;
 }) {
+  const getItemBgColor = () => {
+    let col = "white";
+    if (isChecked) {
+      col = "#eee";
+    }
+
+    if (isSelected) {
+      col = "#ffe7e7ff";
+    }
+
+    return col;
+  };
+
   return (
-    <Pressable onPress={onPressItem} style={styles.listItem}>
+    <Pressable
+      onPress={onPressItem}
+      style={[
+        styles.listItem,
+        {
+          borderColor: isSelected ? "#f86565ff" : "white",
+          backgroundColor: getItemBgColor(),
+        },
+      ]}
+    >
       <View
         style={[
           styles.checkbox,
-          { backgroundColor: isChecked ? "green" : "none" },
+          { backgroundColor: isChecked ? "lime" : "none" },
         ]}
       />
       <Text style={[styles.listItemText, isChecked && styles.checked]}>
@@ -26,9 +50,7 @@ export default function ListItem({
 
 const styles = StyleSheet.create({
   listItem: {
-    borderWidth: 1,
-    borderColor: "grey",
-    backgroundColor: "pink",
+    borderWidth: 2,
     borderRadius: 5,
     height: 40,
     flexDirection: "row",
