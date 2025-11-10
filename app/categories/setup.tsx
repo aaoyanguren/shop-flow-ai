@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import { useRouter } from "expo-router";
 
-import Input from "../../components/Input";
-import ActionButton from "../../components/ActionButton";
 import CategoryCard from "../../components/CategoryCard";
+import ItemManager from "../../components/ItemManager";
 
 const InitialCategories = ["Frozen", "Produce", "Dairy", "Bakery"];
 
@@ -30,6 +29,10 @@ export default function CategorySetupScreen() {
     console.log("[STATE] inputValue:", inputValue);
   }, [inputValue]);
 
+  const handleInputValue = (value: string) => {
+    setInputValue(value);
+  };
+
   const handleAddCategory = () => {
     console.log("[STATE] inputValue:", inputValue);
     if (!inputValue) return;
@@ -38,8 +41,10 @@ export default function CategorySetupScreen() {
 
     if (
       categories.find((cat) => cat.toLowerCase() === newCategory.toLowerCase())
-    )
+    ) {
+      Alert.alert("Category already added");
       return;
+    }
 
     setCategories((prevCategories) => [...prevCategories, newCategory]);
     setInputValue("");
@@ -76,65 +81,24 @@ export default function CategorySetupScreen() {
     setSelectedCategories((prevSelected) => [...prevSelected, category]);
   };
 
-  const removeActionButtonStyles = removeEnabled ? "alternative" : "secondary";
-
-  const getRemoveCategoryText = () => {
-    if (selectedCategories.length > 0 && removeEnabled) {
-      return "Delete Categories";
-    }
-
-    if (removeEnabled) {
-      return "Cancel";
-    }
-
-    return "Remove Category";
-  };
-
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: removeEnabled ? "orange" : "#fff" },
+        { backgroundColor: removeEnabled ? "#f4a385ff" : "#fff" },
       ]}
     >
       <Text style={styles.text}>Category Setup Screen</Text>
 
-      <Input
-        value={inputValue}
-        onChangeText={setInputValue}
-        placeholder="New category name"
+      <ItemManager
+        selectedItems={selectedCategories}
+        inputValue={inputValue}
+        setInputValue={handleInputValue}
+        handleAddCategory={handleAddCategory}
+        handleRemoveCategory={handleRemoveCategory}
+        removeEnabled={removeEnabled}
+        setRemoveEnabled={setRemoveEnabled}
       />
-
-      <View style={styles.buttonsContainer}>
-        <ActionButton
-          isDisabled={inputValue.length === 0}
-          onPress={handleAddCategory}
-        >
-          Add Category
-        </ActionButton>
-        <ActionButton
-          variant={removeActionButtonStyles}
-          onPress={() => {
-            console.log("Remove Category Pressed");
-
-            // If there are selected categories and remove is enabled, proceed to remove
-
-            if (selectedCategories.length > 0 && removeEnabled) {
-              console.log("Proceeding to remove categories");
-              handleRemoveCategory();
-            }
-
-            // Toggle removeEnabled state
-            if (!removeEnabled) {
-              setRemoveEnabled(true);
-            } else {
-              setRemoveEnabled(false);
-            }
-          }}
-        >
-          {getRemoveCategoryText()}
-        </ActionButton>
-      </View>
 
       <View style={styles.categoriesContainer}>
         {categories.map((cat) => (
@@ -157,19 +121,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
-    fontWeight: "bold",
-  },
-  buttonsContainer: {
-    backgroundColor: "#fff",
-    gap: 10,
-    flexDirection: "row",
-  },
-  button: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    color: "#fff",
-    fontSize: 16,
     fontWeight: "bold",
   },
   categoriesContainer: {
